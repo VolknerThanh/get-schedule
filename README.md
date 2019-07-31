@@ -1,9 +1,13 @@
 # Info
-tool 					: GET SCHEDULE
-description 	: cào dữ liệu từ trang daotao để lấy thời khóa biểu của các khoa
-author				: RainSilver
-contributer		: Giấy Nháp
-github				: [Volkner Thành](https://github.com/VolknerThanh "github")
+   tool 					: GET SCHEDULE
+   
+   description 	: cào dữ liệu từ trang daotao để lấy thời khóa biểu của các khoa
+
+   author				: RainSilver
+
+   contributer		: Giấy Nháp
+
+   github				: [Volkner Thành](https://github.com/VolknerThanh "github")
 
 >NOTE : tool thao tác trên nền front-end, chỉ get dữ liệu, không tác động đến cơ sở dữ liệu
 ---
