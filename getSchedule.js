@@ -21,15 +21,38 @@ RUNNING
 
 */
 
-dsLop = []
 
-function getInfo(i) {
+const dsLop = []
+const dsRawData = [];
+const dsTitle = [
+	'',
+	'mã môn học',
+	'tên môn học',
+	'nhóm môn học',
+	'TTH',
+	'số tín chỉ',
+	'số tín chỉ học phí',
+	'mã lớp',
+	'sĩ số',
+	'còn lại',
+	'TH',
+	'thứ',
+	'tiết bắt đầu',
+	'số tiết',
+	'phòng',
+	'giảng viên',
+	'tuần'
+];
+
+function getInfo(steps) {
 	// get select drop down list
 	var allLop = document.getElementById("selectLop").options;
-	// "select" option at 'i' time steps
-	allLop[i].selected=true;
+	// "select" option at 'steps' time steps
+	allLop[steps].selected=true;
 	// change data table after select option
 	selectLop_changed();
+
+	getRawData();
 
 	var dsMon = [];
 	// get entire schedule in table
@@ -46,6 +69,29 @@ function getInfo(i) {
 		malop: tenlop,
 		tkb: dsMon
 	})	
+}
+
+function getRawData(){
+	tableRows = $('#divTDK tr').length;
+	// loop all row in table
+	for(i = 0; i < tableRows; i++){
+		// get number of columns in i-th row
+		var dsRow = [];
+		var tableCols = $('#divTDK tr:eq(' + i + ') td').length; // 17
+		for (j = 0; j < tableCols; j++){
+			// get the content of i-th row and j-th column
+			var data = $('#divTDK tr:eq(' + i + ') td').eq(j).text();
+
+			dsRow.push({
+				title: dsTitle[j],
+				content: data
+			})
+		}
+		dsRawData.push({
+			malop: $('#divTDK td').eq(7).text(),
+			tkb: dsRow
+		})
+	}
 }
 
 function runLoop(maxRow) {
@@ -89,20 +135,26 @@ function downloadData(){
 	str += '</body></html>';
 
 	// trigger download file
-	saveText(str);
+	saveData(str, "thoikhoabieu.html");
 }
 
-function saveText(text,fileName="thoikhoabieu.html"){
+function downloadRawData () {
+	// convert array to string text
+	dataDictionary = JSON.stringify(dsRawData);
+	saveData(dataDictionary, "RawData.txt");
+}
+
+function saveData (data, fileName) {
 	// create an 'a' selector
   const a = document.createElement("a");
  	// a.href =  "data:text/plain;charset=UTF-8,"+encodeURI(text);
  	// create URL
   a.href = window.URL.createObjectURL(
-      new Blob([text],{type:"text/plain;charset=UTF-8"})
+      new Blob([data],{type:"text/plain;charset=UTF-8"})
   	)
   // set attribute to download type
   a.setAttribute("download", fileName);
   // trigger click event
   a.click();
   window.URL.revkeObjectURL(a.href);
-}
+} 
